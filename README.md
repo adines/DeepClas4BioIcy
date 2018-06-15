@@ -18,10 +18,12 @@ To use the plugin you must follow the following steps:
 
 
  2. Run the plugin
+ 
  Go to Plugins and search DeepClas4BioIcy
 
  
  3. Indicate the path to DeepClas4Bio API
+ 
 ![Path of the API](docs/images/002.png)
 
 
