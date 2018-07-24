@@ -2,15 +2,20 @@ package plugins.adines.deepclas4bioicy;
 
 import java.awt.GridLayout;
 import java.awt.Label;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -55,12 +60,31 @@ public class DeepClas4BioIcy extends PluginActionable {
 				python = "python3 ";
 			}
 
-			GridLayout glAPI = new GridLayout(2, 1);
+			JFileChooser pathAPIFileChooser=new JFileChooser();
+			pathAPIFileChooser.setCurrentDirectory(new java.io.File("."));
+			pathAPIFileChooser.setDialogTitle("Select the path of the API");
+			pathAPIFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			
+			GridLayout glAPI = new GridLayout(2, 2);
 			JPanel apiPanel = new JPanel(glAPI);
 
-			JTextField tf = new JTextField();
+			JLabel lPath = new JLabel();
+			JButton bPath=new JButton("Select");
 			apiPanel.add(new JLabel("Introduce the path of the API"));
-			apiPanel.add(tf);
+			apiPanel.add(new JLabel());
+			apiPanel.add(lPath);
+			apiPanel.add(bPath);
+			
+			bPath.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(pathAPIFileChooser.showOpenDialog(apiPanel)==JFileChooser.APPROVE_OPTION) {
+						lPath.setText(pathAPIFileChooser.getSelectedFile().getAbsolutePath());
+					}
+					
+				}
+			});
 
 			adAPI = new ActionDialog("Path API", apiPanel);
 			adAPI.pack();
@@ -69,7 +93,7 @@ public class DeepClas4BioIcy extends PluginActionable {
 				return;
 			}
 
-			pathAPI = tf.getText();
+			pathAPI = lPath.getText()+File.separator;
 
 			String comando = python + pathAPI + "listFrameworks.py";
 			Process p = Runtime.getRuntime().exec(comando);
