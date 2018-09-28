@@ -70,7 +70,7 @@ public class DeepClas4BioIcy extends PluginActionable {
 
 			JLabel lPath = new JLabel();
 			JButton bPath=new JButton("Select");
-			apiPanel.add(new JLabel("Introduce the path of the API"));
+			apiPanel.add(new JLabel("Select the path of the API"));
 			apiPanel.add(new JLabel());
 			apiPanel.add(lPath);
 			apiPanel.add(bPath);
