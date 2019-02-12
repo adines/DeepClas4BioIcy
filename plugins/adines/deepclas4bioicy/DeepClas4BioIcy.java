@@ -2,23 +2,17 @@ package plugins.adines.deepclas4bioicy;
 
 import java.awt.GridLayout;
 import java.awt.Label;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -32,12 +26,10 @@ import icy.plugin.abstract_.PluginActionable;
 
 public class DeepClas4BioIcy extends PluginActionable {
 
-	private String pathAPI;
 
 	private JComboBox<String> frameworkChoices;
 	private JComboBox<String> modelChoices;
 	private ActionDialog gd;
-	private ActionDialog adAPI;
 
 	@Override
 	public void run() {
@@ -52,50 +44,8 @@ public class DeepClas4BioIcy extends PluginActionable {
 		String image = getActiveSequence().getFilename();
 
 		try {
-			String so = System.getProperty("os.name");
-			String python;
-			if (so.contains("Windows")) {
-				python = "python ";
-			} else {
-				python = "python3 ";
-			}
 
-			JFileChooser pathAPIFileChooser=new JFileChooser();
-			pathAPIFileChooser.setCurrentDirectory(new java.io.File("."));
-			pathAPIFileChooser.setDialogTitle("Select the path of the API");
-			pathAPIFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			
-			GridLayout glAPI = new GridLayout(2, 2);
-			JPanel apiPanel = new JPanel(glAPI);
-
-			JLabel lPath = new JLabel();
-			JButton bPath=new JButton("Select");
-			apiPanel.add(new JLabel("Select the path of the API"));
-			apiPanel.add(new JLabel());
-			apiPanel.add(lPath);
-			apiPanel.add(bPath);
-			
-			bPath.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if(pathAPIFileChooser.showOpenDialog(apiPanel)==JFileChooser.APPROVE_OPTION) {
-						lPath.setText(pathAPIFileChooser.getSelectedFile().getAbsolutePath());
-					}
-					
-				}
-			});
-
-			adAPI = new ActionDialog("Path API", apiPanel);
-			adAPI.pack();
-			adAPI.setVisible(true);
-			if (adAPI.isCanceled()) {
-				return;
-			}
-
-			pathAPI = lPath.getText()+File.separator;
-
-			String comando = python + pathAPI + "listFrameworks.py";
+			String comando ="deepclas4bio-listFrameworks";
 			Process p = Runtime.getRuntime().exec(comando);
 			p.waitFor();
 			JSONParser parser = new JSONParser();
@@ -120,7 +70,7 @@ public class DeepClas4BioIcy extends PluginActionable {
 			gl.setHgap(10);
 			gl.setVgap(10);
 
-			comando = python + pathAPI + "listModels.py -f Keras";
+			comando ="deepclas4bio-listModels Keras";
 			p = Runtime.getRuntime().exec(comando);
 			p.waitFor();
 			JSONParser parser2 = new JSONParser();
@@ -150,7 +100,7 @@ public class DeepClas4BioIcy extends PluginActionable {
 				public void itemStateChanged(ItemEvent e) {
 					try {
 						String frameworkSelected = (String) frameworkChoices.getSelectedItem();
-						String comando = python + pathAPI + "listModels.py -f " + frameworkSelected;
+						String comando ="deepclas4bio-listModels " + frameworkSelected;
 						Process p = Runtime.getRuntime().exec(comando);
 						p.waitFor();
 						JSONParser parser = new JSONParser();
@@ -180,7 +130,7 @@ public class DeepClas4BioIcy extends PluginActionable {
 			String framework = (String) frameworkChoices.getSelectedItem();
 			String model = (String) modelChoices.getSelectedItem();
 
-			comando = python + pathAPI + "predict.py -i " + image + " -f " + framework + " -m " + model;
+			comando ="deepclas4bio-predict " + image + " " + framework + " " + model;
 			System.out.println(comando);
 			p = Runtime.getRuntime().exec(comando);
 			p.waitFor();
