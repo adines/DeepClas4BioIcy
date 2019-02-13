@@ -3,7 +3,7 @@
 DeepClas4BioIcy is an Icy plugin that connects Icy with the [DeepClas4Bio API](https://github.com/adines/DeepClas4Bio).  This plugin allows Icy users to use deep learning techniques for object classification abstracting deep learning techniques details. 
 
 ## Requirements
-To use this plugin is necessary to have installed Icy with Java 8 and download the [DeepClas4Bio API](https://github.com/adines/DeepClas4Bio).
+To use this plugin is necessary to have installed Icy with Java 8 and the [DeepClas4Bio API](https://github.com/adines/DeepClas4Bio).
 
 ## Installation
 This plugin is updated in the Icy repository and the recommendable way to install it is download the plugin using the Icy repository.
@@ -21,15 +21,10 @@ To use the plugin you must follow the following steps:
  
  Go to Plugins and search DeepClas4BioIcy
 
- 
- 3. Indicate the path to DeepClas4Bio API
- 
-![Path of the API](docs/images/002.png)
 
-
- 4. Select the framework and the model you want use
+ 3. Select the framework and the model you want use
  ![Select framework and model](docs/images/003.png)
 
  
- 5. Visualize the output
+ 4. Visualize the output
  ![Visualize the output](docs/images/004.png)
